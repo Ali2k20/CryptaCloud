@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptaCloud | UOB Senior Project</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              red: '#800000',
+              red_light: '#a31f1f',
+              bg: '#f8fafc',
+              card: '#ffffff',
+            }
+          },
+          boxShadow: {
+            'slide': '0 4px 20px rgba(0,0,0,0.05)',
+            'game': '0 10px 30px rgba(128, 0, 0, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background-color: #f8fafc; color: #1e293b; padding-top: 130px; }
+
+    .slide-section{
+      min-height:85vh; display:flex; flex-direction:column; justify-content:center;
+      border-bottom:1px solid #e2e8f0; padding:4rem 1rem;
+    }
+
+    .game-option{ transition:all .2s ease; cursor:pointer; }
+    .game-option:hover{ transform:translateY(-2px); border-color:#800000; }
+
+    .hidden-step{ display:none !important; }
+    .fade-in{ animation:fadeIn .5s ease-out forwards; }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+    .tech-tag{
+      display:inline-flex; align-items:center; padding:.5rem 1rem; background:#fff; border:1px solid #e2e8f0;
+      border-radius:9999px; font-size:.875rem; font-weight:600; color:#475569;
+      box-shadow:0 1px 2px rgba(0,0,0,.05); transition:all .2s;
+    }
+    .tech-tag:hover{ border-color:#800000; color:#800000; transform:translateY(-1px); }
+
+    section { scroll-margin-top:160px; }
+
+    @media (max-width:1024px){
+      body{ padding-top:120px; }
+      section{ scroll-margin-top:140px; }
+      .slide-section{ padding:3.25rem 1rem; }
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:96px; }
+      section{ scroll-margin-top:116px; }
+      .slide-section{ min-height:auto; padding:3rem 1rem; }
+      #home h1{ font-size:2.35rem !important; line-height:1.15 !important; }
+      #home p{ font-size:1rem !important; }
+      #home .flex.gap-4{ flex-direction:column; align-items:stretch; }
+      #home .flex.gap-4 a{ width:100%; justify-content:center; }
+      #abstract .prose{ padding:1.25rem !important; }
+      #challenge #game-step-1{ padding:1.5rem !important; }
+      #challenge .game-option{ padding:1.25rem !important; }
+      #challenge h3{ font-size:1.25rem !important; line-height:1.35 !important; }
+      #methodology .bg-gray-50.p-10{ padding:1.5rem !important; }
+      #results .bg-\\[\\#1e1e1e\\].p-8{ padding:1.25rem !important; }
+      #demo h2{ font-size:2rem !important; }
+    }
+
+    @media (max-width:420px){
+      body{ padding-top:92px; }
+      #home h1{ font-size:2.05rem !important; }
+      .slide-section{ padding:2.5rem .9rem; }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <nav class="fixed top-0 w-full z-50 bg-white shadow-md border-b-4 border-brand-red transition-all h-[96px] md:h-[130px]">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex flex-col justify-center">
+
+      <div class="flex items-center justify-between py-2">
+        <div class="flex items-center gap-3 md:gap-4">
+          <img src="uob.png" alt="UOB Logo" class="h-12 md:h-16 w-auto"
+               onerror="this.src='https://via.placeholder.com/64x64/800000/FFFFFF?text=UOB'">
+
+          <div class="flex flex-col justify-center border-l-2 border-gray-300 pl-3 md:pl-4 h-12
+                      text-[10px] sm:text-xs md:text-sm text-slate-600 leading-tight">
+            <span class="font-bold text-slate-900 uppercase tracking-wide">University of Bahrain</span>
+            <span class="block text-[9px] sm:text-xs md:text-sm">College of Information Technology</span>
+            <span class="block text-[9px] sm:text-xs md:text-sm">Department of Computer Engineering</span>
+          </div>
+        </div>
+
+        <div class="hidden md:flex flex-col items-end text-right">
+          <h1 class="font-heading font-extrabold text-2xl text-brand-red tracking-tight">CryptaCloud</h1>
+          <p class="text-[10px] font-medium text-gray-500 uppercase tracking-widest bg-gray-100 px-2 py-1 rounded mt-1">
+            Zero-Trust Encrypted Cloud Storage
+          </p>
+        </div>
+
+        <div class="md:hidden flex items-center gap-3">
+          <div class="text-right">
+            <div class="font-heading font-extrabold text-brand-red text-lg leading-none">CryptaCloud</div>
+            <div class="text-[9px] text-gray-500 uppercase tracking-widest mt-1">Zero-Trust • Private Search</div>
+          </div>
+
+          <button id="menuBtn"
+                  class="ml-1 inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50"
+                  aria-label="Open menu"
+                  aria-expanded="false">
+            <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="hidden md:block border-t border-gray-100 py-2">
+        <div class="flex items-center gap-6 text-sm font-medium text-gray-600 justify-end">
+          <a href="#home" class="hover:text-brand-red transition-colors">Home</a>
+          <a href="#abstract" class="hover:text-brand-red transition-colors">Abstract</a>
+          <a href="#challenge" class="text-brand-red font-bold hover:text-red-800 transition-colors bg-red-50 px-2 rounded">Interactive Game</a>
+          <a href="#objectives" class="hover:text-brand-red transition-colors">Objectives</a>
+          <a href="#methodology" class="hover:text-brand-red transition-colors">Methodology</a>
+          <a href="#technologies" class="hover:text-brand-red transition-colors">Technologies</a>
+          <a href="#results" class="hover:text-brand-red transition-colors">Results</a>
+          <a href="#demo" class="hover:text-brand-red transition-colors">Demo</a>
+          <a href="#team" class="hover:text-brand-red transition-colors">Team</a>
+        </div>
+      </div>
+
+      <div id="mobileMenu"
+           class="md:hidden hidden absolute top-[96px] left-0 w-full bg-white border-t border-gray-200 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-2 text-sm font-medium text-gray-700">
+          <a href="#home" class="px-3 py-2 rounded-lg hover:bg-gray-50">Home</a>
+          <a href="#abstract" class="px-3 py-2 rounded-lg hover:bg-gray-50">Abstract</a>
+          <a href="#challenge" class="px-3 py-2 rounded-lg bg-red-50 text-brand-red font-bold">Interactive Game</a>
+          <a href="#objectives" class="px-3 py-2 rounded-lg hover:bg-gray-50">Objectives</a>
+          <a href="#methodology" class="px-3 py-2 rounded-lg hover:bg-gray-50">Methodology</a>
+          <a href="#technologies" class="px-3 py-2 rounded-lg hover:bg-gray-50">Technologies</a>
+          <a href="#results" class="px-3 py-2 rounded-lg hover:bg-gray-50">Results</a>
+          <a href="#demo" class="px-3 py-2 rounded-lg hover:bg-gray-50">Demo</a>
+          <a href="#team" class="px-3 py-2 rounded-lg hover:bg-gray-50">Team</a>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <section id="home" class="slide-section bg-white relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-red-50/50 -skew-x-12 translate-x-20 z-0"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full relative z-10 grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+      <div>
+        <div class="inline-block px-3 py-1 bg-white text-brand-red text-xs font-bold rounded-full mb-6 border border-brand-red shadow-sm">
+          SENIOR PROJECT 2025/2026
+        </div>
+
+        <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight mb-6">
+          Taking Back<br><span class="text-brand-red">Cloud Privacy</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
+          CryptaCloud keeps your files private <strong>and still searchable</strong> — without trusting the cloud provider.
+        </p>
+
+        <div class="flex gap-4">
+          <a href="#challenge"
+             class="bg-brand-red text-white px-6 sm:px-8 py-3 rounded-lg font-bold shadow-lg hover:bg-red-800 transition-all flex items-center gap-2 justify-center">
+            Start Interactive Demo <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#abstract"
+             class="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-all text-center">
+            Read Abstract
+          </a>
+        </div>
+      </div>
+
+      <div class="relative hidden md:block">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 rotate-1 hover:rotate-0 transition-transform duration-500">
+          <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+            <span class="text-xs text-gray-400 font-mono ml-auto">Storage Visualization</span>
+          </div>
+
+          <div class="flex items-center gap-2 mb-4">
+            <button id="heroTabApp"
+              class="px-3 py-2 rounded-lg text-sm font-bold border border-gray-200 bg-gray-50 text-slate-800 hover:bg-gray-100 transition"
+              aria-selected="true" type="button">
+              App View
+            </button>
+            <button id="heroTabCloud"
+              class="px-3 py-2 rounded-lg text-sm font-bold border border-gray-200 bg-white text-slate-600 hover:bg-gray-50 transition"
+              aria-selected="false" type="button">
+              Cloud View
+            </button>
+          </div>
+
+          <div id="heroAppPanel" class="space-y-3">
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">What you see (Decrypted)</div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="file-text" class="text-blue-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">Senior_Project_Report.pdf</span>
+              </div>
+              <span class="text-[11px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded border border-green-100">Accessible</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="file-text" class="text-blue-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">Lab_Notes.docx</span>
+              </div>
+              <span class="text-[11px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded border border-green-100">Accessible</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="file-text" class="text-blue-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">Research_Paper.pdf</span>
+              </div>
+              <span class="text-[11px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded border border-green-100">Accessible</span>
+            </div>
+
+            <div class="mt-4 p-3 bg-green-50 text-green-800 text-xs rounded border border-green-100 text-center font-bold">
+              ✔ You can read real names and search content.
+            </div>
+          </div>
+
+          <div id="heroCloudPanel" class="space-y-3 hidden">
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">What Cloud Stores (Dumb Storage)</div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="cloud" class="text-slate-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">f7a902...b1.enc</span>
+              </div>
+              <span class="text-[11px] font-semibold text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">Encrypted</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="cloud" class="text-slate-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">a3c481...9d.enc</span>
+              </div>
+              <span class="text-[11px] font-semibold text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">Encrypted</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100">
+              <div class="flex items-center gap-3">
+                <i data-lucide="cloud" class="text-slate-500 w-5 h-5"></i>
+                <span class="text-sm font-medium text-gray-700">d1e2f3...00.enc</span>
+              </div>
+              <span class="text-[11px] font-semibold text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">Encrypted</span>
+            </div>
+
+            <div class="mt-4 p-3 bg-red-50 text-red-800 text-xs rounded border border-red-100 text-center font-bold">
+              ✖ The cloud sees only random names. It cannot read or search anything.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="abstract" class="slide-section bg-brand-bg">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 w-full">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-8 border-l-8 border-brand-red pl-6">Abstract</h2>
+
+      <div class="prose prose-base sm:prose-lg text-gray-600 text-justify leading-relaxed bg-white p-6 sm:p-8 rounded-xl border border-gray-100 shadow-sm">
+        <p class="mb-6">
+          This project introduces an application designed to let users search through their files while ensuring they remain fully encrypted and safe from the cloud provider.
+          Traditional cloud storage requires you to trust the provider, but this application removes that requirement.
+        </p>
+        <p class="mb-6">
+          The core outcome is that the cloud provider acts essentially as <strong>"dumb storage."</strong> It only stores files with random, scrambled filenames
+          (like <code>a8f9...enc</code>) and has no way to read the contents or understand what the files are.
+        </p>
+        <p>
+          Meanwhile, the application on the user's device allows them to see the real filenames and search the file contents to find exactly what they need.
+          This ensures complete privacy without sacrificing the ability to organize and find data easily.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="challenge" class="slide-section bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 w-full">
+      <div class="text-center mb-10">
+        <span class="text-brand-red font-bold tracking-widest text-xs uppercase">Interactive Experience</span>
+        <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900">The Cloud Trust Challenge</h2>
+        <p class="text-gray-600 mt-2">Test your understanding of storage security.</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-2xl shadow-game overflow-hidden min-h-[420px] sm:min-h-[450px] relative border border-gray-200">
+        <div id="game-step-1" class="p-6 sm:p-10 flex flex-col items-center justify-center h-full text-center fade-in">
+          <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+            <i data-lucide="key" class="w-10 h-10 text-blue-600"></i>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-8">
+            Who controls access to your data in standard cloud apps?
+          </h3>
+
+          <div class="grid md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-xl">
+            <button onclick="nextStep('cloud')" class="game-option p-5 sm:p-8 bg-white border-2 border-gray-100 rounded-2xl text-left hover:bg-red-50 hover:border-red-200 hover:shadow-lg">
+              <span class="block font-bold text-lg sm:text-xl mb-2">☁️ The Provider</span>
+              <span class="text-sm text-gray-500">They can access that data whenever they want.</span>
+            </button>
+            <button onclick="nextStep('local')" class="game-option p-5 sm:p-8 bg-white border-2 border-gray-100 rounded-2xl text-left hover:bg-green-50 hover:border-green-200 hover:shadow-lg">
+              <span class="block font-bold text-lg sm:text-xl mb-2">💻 Encrypt Yourself</span>
+              <span class="text-sm text-gray-500">You have privacy, but you lose search functionality.</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="result-cloud" class="hidden-step p-6 sm:p-10 flex flex-col items-center justify-center h-full text-center">
+          <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4 animate-bounce">
+            <i data-lucide="alert-triangle" class="w-10 h-10 text-red-600"></i>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-red-700 mb-2">Exactly.</h3>
+          <p class="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+            If the provider holds the keys, they can access your data anytime. CryptaCloud changes this by making the cloud act as dumb storage only.
+          </p>
+          <button onclick="resetGame()" class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+            Try Again
+          </button>
+        </div>
+
+        <div id="result-local" class="hidden-step p-6 sm:p-10 flex flex-col items-center justify-center h-full text-center">
+          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <i data-lucide="check-circle" class="w-10 h-10 text-green-600"></i>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-green-700 mb-2">That's the Tradeoff.</h3>
+          <p class="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+            Usually, if you encrypt files yourself, you can't search them anymore. CryptaCloud removes this tradeoff—giving you total privacy AND the ability to search.
+          </p>
+          <button onclick="resetGame()" class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="objectives" class="slide-section bg-brand-bg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-10 sm:mb-12 text-center">Project Objectives</h2>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 hover:border-brand-red hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center shadow-sm mb-6 text-2xl group-hover:scale-110 transition-transform">🔒</div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Zero-Trust</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Cloud provider stores data but cannot understand it.</p>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 hover:border-brand-red hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center shadow-sm mb-6 text-2xl group-hover:scale-110 transition-transform">🔎</div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Private Search</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Search your encrypted files without exposing keywords to the cloud.</p>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 hover:border-brand-red hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center shadow-sm mb-6 text-2xl group-hover:scale-110 transition-transform">🛡️</div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Tamper Detection</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Detect changes to stored files and reject anything suspicious.</p>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 hover:border-brand-red hover:shadow-lg transition-all group">
+          <div class="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center shadow-sm mb-6 text-2xl group-hover:scale-110 transition-transform">💻</div>
+          <h3 class="font-bold text-xl text-slate-800 mb-3">Usability</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Simple interface so anyone can use secure storage easily.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="methodology" class="slide-section bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full">
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div>
+          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-6">Methodology</h2>
+          <p class="text-gray-600 mb-8">A clear separation between trusted local operations and untrusted cloud storage.</p>
+
+          <ul class="space-y-6 sm:space-y-8">
+            <li class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-brand-red font-bold text-xl">1</div>
+              <div class="ml-4 sm:ml-6">
+                <h4 class="text-xl font-bold text-slate-800">User Device (Trusted)</h4>
+                <p class="text-gray-600 mt-2 text-sm leading-relaxed">
+                  All operations (encryption, search, decryption) happen here on your device <strong>before</strong> uploading to the cloud.
+                </p>
+              </div>
+            </li>
+
+            <li class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-brand-red font-bold text-xl">2</div>
+              <div class="ml-4 sm:ml-6">
+                <h4 class="text-xl font-bold text-slate-800">Private Search Map</h4>
+                <p class="text-gray-600 mt-2 text-sm leading-relaxed">
+                  A private, hidden map stored on your computer that remembers which encrypted file contains which words.
+                </p>
+              </div>
+            </li>
+
+            <li class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-brand-red font-bold text-xl">3</div>
+              <div class="ml-4 sm:ml-6">
+                <h4 class="text-xl font-bold text-slate-800">Dumb Storage (Untrusted)</h4>
+                <p class="text-gray-600 mt-2 text-sm leading-relaxed">
+                  The cloud storage layer. It stores all our encrypted files, but it has no keys, no logic, and cannot read anything.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-gray-50 p-6 sm:p-10 rounded-3xl border border-gray-200 text-center shadow-inner">
+          <div class="font-mono text-xs text-gray-400 mb-4 uppercase tracking-widest">Data Flow (Simple)</div>
+
+          <div class="inline-block p-6 bg-white rounded-2xl border border-blue-200 shadow-sm mb-6 w-full relative">
+            <span class="font-bold text-blue-900 text-lg block mb-2">Your Device</span>
+            <div class="flex flex-wrap justify-center gap-2 text-xs">
+              <span class="bg-blue-50 px-2 py-1 rounded text-blue-600">Encrypt / Decrypt</span>
+              <span class="bg-blue-50 px-2 py-1 rounded text-blue-600">Search Logic</span>
+              <span class="bg-blue-50 px-2 py-1 rounded text-blue-600">Map Management</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center justify-center gap-1 my-2">
+            <div class="w-0.5 h-6 bg-gray-300"></div>
+            <div class="text-[10px] bg-white px-4 py-1 rounded-full border border-gray-200 text-gray-500 font-mono">
+              ENCRYPTED BLOB ONLY
+            </div>
+            <div class="w-0.5 h-6 bg-gray-300"></div>
+          </div>
+
+          <div class="inline-block p-6 bg-white rounded-2xl border border-red-200 shadow-sm mt-2 w-full">
+            <span class="font-bold text-brand-red text-lg block mb-2">Dumb Storage</span>
+            <div class="text-sm text-red-800 opacity-75">No Keys. No Logic. Just Files.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="technologies" class="slide-section bg-brand-bg">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 w-full text-center">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-10 sm:mb-12">Technologies Used</h2>
+      <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Cryptography Library</span>
+        <span class="tech-tag">SQLite</span>
+        <span class="tech-tag">Cloud Storage</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="slide-section bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full">
+      <div class="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+        <div>
+          <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-6">Results</h2>
+          <p class="text-gray-600 mb-6 leading-relaxed">
+            CryptaCloud was tested to ensure that the privacy mechanism works as intended.
+          </p>
+
+          <ul class="space-y-4 text-gray-700">
+            <li class="flex items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4 mt-0.5 sm:mt-0">
+                <i data-lucide="check" class="text-green-600 w-5 h-5"></i>
+              </div>
+              <span><strong>Encrypted Upload:</strong> Files are stored with random names (e.g., <code>uuid-123.enc</code>).</span>
+            </li>
+            <li class="flex items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4 mt-0.5 sm:mt-0">
+                <i data-lucide="check" class="text-green-600 w-5 h-5"></i>
+              </div>
+              <span><strong>Private Search:</strong> You can find files by content without the cloud knowing the keywords.</span>
+            </li>
+            <li class="flex items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4 mt-0.5 sm:mt-0">
+                <i data-lucide="check" class="text-green-600 w-5 h-5"></i>
+              </div>
+              <span><strong>Tamper Detection:</strong> If the cloud file is changed, the app rejects it.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-[#1e1e1e] rounded-xl p-6 sm:p-8 text-gray-300 shadow-2xl font-mono text-xs sm:text-sm border border-gray-800">
+          <div class="flex items-center gap-2 mb-6 border-b border-gray-700 pb-4">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="ml-auto text-xs text-gray-500">System Log</span>
+          </div>
+          <div class="space-y-3">
+            <p class="text-white font-bold">[START] batch upload of 1 file(s)...</p>
+            <p class="text-blue-400">[INFO] Encrypting: Senior_Project_Report.pdf</p>
+            <p class="text-green-400">[OK] Uploaded: f81d4fae7dec11d0.enc</p>
+            <p class="text-blue-400">[INFO] Syncing search index to the cloud...</p>
+            <br>
+            <p class="text-blue-400">[INFO] Searching file contents for: 'nebula'</p>
+            <p class="text-green-400">[OK] Found 1 files matching 'nebula'.</p>
+            <br>
+            <p class="text-green-400">[OK] Decrypted to: C:/Users/HP/Desktop/Senior_Project_Report.pdf</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="slide-section bg-slate-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full text-center">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-10 sm:mb-12">Project Demonstration</h2>
+
+      <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
+        <div class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 group hover:border-brand-red transition-colors">
+          <div class="aspect-video bg-black">
+            <video class="w-full h-full" controls preload="metadata" playsinline>
+              <source src="Arabic-Elevator-CryptaCloud Zero Trust.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="p-5 sm:p-6 text-left">
+            <div class="text-xs font-bold text-gray-400 mb-1">ARABIC</div>
+            <h3 class="font-bold text-lg">Elevator Pitch</h3>
+          </div>
+        </div>
+
+        <div class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 group hover:border-brand-red transition-colors">
+          <div class="aspect-video bg-black">
+            <video class="w-full h-full" controls preload="metadata" playsinline>
+              <source src="English-Elevator-CryptaCloud Zero Trust.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="p-5 sm:p-6 text-left">
+            <div class="text-xs font-bold text-gray-400 mb-1">ENGLISH</div>
+            <h3 class="font-bold text-lg">Elevator Pitch</h3>
+          </div>
+        </div>
+
+        <div class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 group hover:border-brand-red transition-colors relative">
+          <div class="absolute top-3 right-3 bg-green-600 text-xs font-bold px-2 py-1 rounded shadow-sm">LIVE DEMO</div>
+          <div class="aspect-video bg-black">
+            <video class="w-full h-full" controls preload="metadata" playsinline>
+              <source src="cryptacloud video demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="p-5 sm:p-6 text-left">
+            <div class="text-xs font-bold text-gray-400 mb-1">SYSTEM</div>
+            <h3 class="font-bold text-lg">Full Walkthrough</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="conclusion" class="slide-section bg-brand-bg">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 w-full">
+      <div class="grid md:grid-cols-2 gap-8 sm:gap-12">
+        <div>
+          <h2 class="font-heading text-2xl sm:text-3xl font-bold text-slate-900 mb-6">Conclusion</h2>
+          <p class="text-gray-600 leading-relaxed text-justify">
+            CryptaCloud protects user privacy by treating the cloud as dumb storage. All security operations happen on the user's device,
+            ensuring that the provider sees nothing but random encrypted files.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 shadow-sm">
+          <h2 class="font-heading text-2xl sm:text-3xl font-bold text-slate-900 mb-6">Future Work</h2>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 text-gray-700"><i data-lucide="arrow-right-circle" class="text-brand-red"></i> Multi-User Sharing</li>
+            <li class="flex items-center gap-3 text-gray-700"><i data-lucide="arrow-right-circle" class="text-brand-red"></i> Expanded File Support (Excel/PPT)</li>
+            <li class="flex items-center gap-3 text-gray-700"><i data-lucide="arrow-right-circle" class="text-brand-red"></i> Performance Optimization</li>
+            <li class="flex items-center gap-3 text-gray-700"><i data-lucide="arrow-right-circle" class="text-brand-red"></i> Automated Backup & Recovery</li>
+            <li class="flex items-center gap-3 text-gray-700"><i data-lucide="arrow-right-circle" class="text-brand-red"></i> Cross-Platform Support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="slide-section bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 w-full text-center">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-4">About the Project & Team</h2>
+
+      <div class="bg-blue-50 border border-blue-100 p-5 sm:p-6 rounded-lg text-blue-800 text-sm mb-10 sm:mb-12 inline-block max-w-2xl leading-relaxed">
+        This project is a Final Year Senior Project completed during Semester 1 of the Academic Year 2025/2026 at the College of Information Technology — University of Bahrain.
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-left mb-12">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Team Member</div>
+              <h3 class="font-heading text-xl font-extrabold text-slate-900 mt-1">Ali Abbas Yahya Majed</h3>
+              <p class="text-sm text-gray-600 mt-1 font-medium">Computer Engineering</p>
+              <p class="text-xs text-brand-red mt-1 font-mono">ali@gmail.com</p>
+            </div>
+            <div class="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center border border-red-100">
+              <i data-lucide="user" class="w-5 h-5 text-brand-red"></i>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            <a href="https://linkedin.com"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+            </a>
+            <a href="cv-ali.pdf"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="file-text" class="w-4 h-4"></i> View CV
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Team Member</div>
+              <h3 class="font-heading text-xl font-extrabold text-slate-900 mt-1">Mohammad Hamzah Abdulmalek</h3>
+              <p class="text-sm text-gray-600 mt-1 font-medium">Computer Engineering</p>
+              <p class="text-xs text-brand-red mt-1 font-mono">mohammad@gmail.com</p>
+            </div>
+            <div class="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center border border-red-100">
+              <i data-lucide="user" class="w-5 h-5 text-brand-red"></i>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            <a href="https://linkedin.com"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+            </a>
+            <a href="cv-mohammad.pdf"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="file-text" class="w-4 h-4"></i> View CV
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Team Member</div>
+              <h3 class="font-heading text-xl font-extrabold text-slate-900 mt-1">Ebrahim Abdulmoamen Abdo</h3>
+              <p class="text-sm text-gray-600 mt-1 font-medium">Computer Engineering</p>
+              <p class="text-xs text-brand-red mt-1 font-mono">ebrahim@gmail.com</p>
+            </div>
+            <div class="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center border border-red-100">
+              <i data-lucide="user" class="w-5 h-5 text-brand-red"></i>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-3">
+             <a href="https://linkedin.com"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+            </a>
+            <a href="cv-ebrahim.pdf"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-red hover:text-brand-red hover:bg-red-50 transition-colors text-sm font-semibold">
+              <i data-lucide="file-text" class="w-4 h-4"></i> View CV
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="inline-block px-8 sm:px-12 py-7 sm:py-8 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
+        <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Project Supervisor</div>
+        <div class="text-xl sm:text-2xl font-bold text-brand-red font-heading">Dr. Ebrahim Abdulrahman Janahi</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-white border-t border-gray-200 py-10 sm:py-12 text-center text-sm text-gray-500">
+    <div class="max-w-6xl mx-auto px-6">
+      <img src="uob.png" alt="UOB"
+           class="h-10 sm:h-12 w-auto mx-auto mb-6 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+      <p>&copy; 2026 University of Bahrain • Senior Project</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Game Logic
+      window.nextStep = function(choice) {
+        document.getElementById('game-step-1').classList.add('hidden-step');
+        const el = (choice === 'cloud') ? document.getElementById('result-cloud') : document.getElementById('result-local');
+        el.classList.remove('hidden-step');
+        el.classList.add('fade-in');
+      };
+
+      window.resetGame = function() {
+        document.getElementById('result-cloud').classList.add('hidden-step');
+        document.getElementById('result-local').classList.add('hidden-step');
+        const step1 = document.getElementById('game-step-1');
+        step1.classList.remove('hidden-step');
+        step1.classList.add('fade-in');
+      };
+
+      // Mobile menu
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+
+      if (btn && menu) {
+        const closeMenu = () => {
+          menu.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        };
+
+        btn.addEventListener('click', () => {
+          const isOpen = !menu.classList.contains('hidden');
+          if (isOpen) closeMenu();
+          else {
+            menu.classList.remove('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+        document.addEventListener('click', (e) => {
+          if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+        });
+      }
+
+      // Hero tabs
+      const tabApp = document.getElementById('heroTabApp');
+      const tabCloud = document.getElementById('heroTabCloud');
+      const panelApp = document.getElementById('heroAppPanel');
+      const panelCloud = document.getElementById('heroCloudPanel');
+
+      const setHeroTab = (which) => {
+        const appActive = which === 'app';
+        panelApp.classList.toggle('hidden', !appActive);
+        panelCloud.classList.toggle('hidden', appActive);
+
+        tabApp.classList.toggle('bg-gray-50', appActive);
+        tabApp.classList.toggle('bg-white', !appActive);
+        tabApp.classList.toggle('text-slate-800', appActive);
+        tabApp.classList.toggle('text-slate-600', !appActive);
+
+        tabCloud.classList.toggle('bg-gray-50', !appActive);
+        tabCloud.classList.toggle('bg-white', appActive);
+        tabCloud.classList.toggle('text-slate-800', !appActive);
+        tabCloud.classList.toggle('text-slate-600', appActive);
+
+        tabApp.setAttribute('aria-selected', appActive ? 'true' : 'false');
+        tabCloud.setAttribute('aria-selected', appActive ? 'false' : 'true');
+      };
+
+      if (tabApp && tabCloud && panelApp && panelCloud) {
+        tabApp.addEventListener('click', () => setHeroTab('app'));
+        tabCloud.addEventListener('click', () => setHeroTab('cloud'));
+      }
+
+      // Icons
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
